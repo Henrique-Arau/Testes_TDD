@@ -8,6 +8,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -24,6 +25,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import br.ce.henrique.daos.LocacaoDAO;
+import br.ce.henrique.daos.LocacaoDAOFake;
 import br.ce.henrique.entidades.Filme;
 import br.ce.henrique.entidades.Locacao;
 import br.ce.henrique.entidades.Usuario;
@@ -39,6 +41,9 @@ public class LocacaoServiceTest {
 	
 	private LocacaoService service;
 	
+	private SPCService spc;
+	private LocacaoDAO dao;
+	
     
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
@@ -48,9 +53,18 @@ public class LocacaoServiceTest {
 	
 	@Before
 	public void setUp() {
-		 service = new LocacaoService();
-		 LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
+		service = new LocacaoService();
+		 
+		
+		 //uso do Fake
+		 //LocacaoDAO dao = new LocacaoDAOFake();
+		 
+		 //uso do mockito
+		 dao = Mockito.mock(LocacaoDAO.class);
 		 service.setLocacaoDAO(dao);
+		 
+		 spc = Mockito.mock(SPCService.class);
+		 service.setSPCService(spc);
 	}
     
     @Test
@@ -223,59 +237,23 @@ public class LocacaoServiceTest {
     	 
      }
      
-     /*
-     
      @Test
-     public void testLocacao_filmeSemEstoque_2() {
+     public void naoDeveAlugarFilmesParaNegativadoSPC() throws FilmeSemEstoqueException, LocadoraException {
+    	 //cenario
+    	 Usuario usuario = new Usuario("Ususario 1");
+    	 List<Filme> filmes = Arrays.asList(new Filme("1", 1, 5.0));
     	 
-        //cenario
- 		LocacaoService service= new LocacaoService();
- 		Usuario usuario = new Usuario("Usuario 1");
- 		Filme filme = new Filme("Filme 1", 2, 5.0);
- 		
- 		//Acao
- 		 try {
-			service.alugarFilme(usuario, filme);
-			Assert.fail("Deveria ter lancado uma excecao");
-		} catch (Exception e) {
-		  assertThat(e.getMessage(), is("Filme sem estoque"));
-		}
- 		  
- 		
+    	 when(spc.possuiNegativacao(usuario)).thenReturn(true);
     	 
-     }*/
+    	 exception.expect(LocadoraException.class);
+    	 exception.expectMessage("Usuario Negativado");
+    	 
+    	 //acao
+    	 service.alugarFilme(usuario, filmes);
+    	 
+     }
      
-
-	
-
-		//verificacao
-		//System.out.println(locacao.getValor() == 5.0);
-		//System.out.println(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
-		//System.out.println(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
-        
-        //exemplo assertThat
-        
-        //Assert.assertThat(locacao.getValor(), is(equalTo(5.0)));
-        //Assert.assertThat(locacao.getValor(), is(not(6.0)));
-        //Assert.assertThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true)); erro
-        //Assert.assertThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true)); erro
-		
-		/*acao
-        Locacao locacao;
-		try {
-			locacao = service.alugarFilme(usuario, filme);
-			
-			//verificacao
-			error.checkThat(locacao.getValor(), is(equalTo(5.0)));
-			error.checkThat(isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-			error.checkThat(isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), is(true));
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail("Não deveria lancar excecao");
-		}*/
- 
-
-    
+  
 
 	
 
