@@ -14,29 +14,24 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.Mockito;
 
 import br.ce.henrique.daos.LocacaoDAO;
-import br.ce.henrique.daos.LocacaoDAOFake;
 import br.ce.henrique.entidades.Filme;
 import br.ce.henrique.entidades.Locacao;
 import br.ce.henrique.entidades.Usuario;
 import br.ce.henrique.exceptions.FilmeSemEstoqueException;
 import br.ce.henrique.exceptions.LocadoraException;
-import br.ce.henrique.matchers.DiaSemanaMatcher;
 import br.ce.henrique.matchers.MatchersProprios;
-import br.ce.henrique.servicos.LocacaoService;
 import br.ce.henrique.utils.DataUtils;
+
 
 
 
@@ -54,7 +49,7 @@ public class LocacaoServiceTest {
 	@Before
 	public void setUp() {
 		 service = new LocacaoService();
-		 LocacaoDAO dao = new LocacaoDAOFake();
+		 LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
 		 service.setLocacaoDAO(dao);
 	}
     

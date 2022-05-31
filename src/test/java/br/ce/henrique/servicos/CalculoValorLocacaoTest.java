@@ -13,15 +13,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
+import org.mockito.Mockito;
 
 import br.ce.henrique.daos.LocacaoDAO;
-import br.ce.henrique.daos.LocacaoDAOFake;
 import br.ce.henrique.entidades.Filme;
 import br.ce.henrique.entidades.Locacao;
 import br.ce.henrique.entidades.Usuario;
 import br.ce.henrique.exceptions.FilmeSemEstoqueException;
 import br.ce.henrique.exceptions.LocadoraException;
-import br.ce.henrique.servicos.LocacaoService;
 
 
 @RunWith(Parameterized.class)
@@ -42,7 +41,7 @@ public class CalculoValorLocacaoTest {
 	@Before
 	public void setup() {
 		 service =  new LocacaoService();
-		 LocacaoDAO dao = new LocacaoDAOFake();
+		 LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
 		 service.setLocacaoDAO(dao);
 	}
 	
