@@ -14,6 +14,8 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 
+import br.ce.henrique.daos.LocacaoDAO;
+import br.ce.henrique.daos.LocacaoDAOFake;
 import br.ce.henrique.entidades.Filme;
 import br.ce.henrique.entidades.Locacao;
 import br.ce.henrique.entidades.Usuario;
@@ -40,6 +42,8 @@ public class CalculoValorLocacaoTest {
 	@Before
 	public void setup() {
 		 service =  new LocacaoService();
+		 LocacaoDAO dao = new LocacaoDAOFake();
+		 service.setLocacaoDAO(dao);
 	}
 	
 	

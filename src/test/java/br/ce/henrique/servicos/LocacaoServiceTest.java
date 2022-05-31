@@ -26,6 +26,8 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
+import br.ce.henrique.daos.LocacaoDAO;
+import br.ce.henrique.daos.LocacaoDAOFake;
 import br.ce.henrique.entidades.Filme;
 import br.ce.henrique.entidades.Locacao;
 import br.ce.henrique.entidades.Usuario;
@@ -41,8 +43,7 @@ import br.ce.henrique.utils.DataUtils;
 public class LocacaoServiceTest {
 	
 	private LocacaoService service;
-	//definicao do contador
-	private static int contador = 0;
+	
     
 	@Rule
 	public ErrorCollector error = new ErrorCollector();
@@ -52,29 +53,11 @@ public class LocacaoServiceTest {
 	
 	@Before
 	public void setUp() {
-		System.out.println("Before");
-		service = new LocacaoService();
-		//incremento
-		contador++;
-		//impressão do contador
-		System.out.println(contador);
+		 service = new LocacaoService();
+		 LocacaoDAO dao = new LocacaoDAOFake();
+		 service.setLocacaoDAO(dao);
 	}
     
-	@After
-	public void tearDown() {
-		System.out.println("After");
-		
-	}
-	@BeforeClass
-	public static void setUpClass() {
-		System.out.println("Before class");
-	}
-    
-	@AfterClass
-	public static void tearDownClass() {
-		System.out.println("After class");
-		
-	}
     @Test
 	public void deveAlugarFilme() throws Exception{
     	
